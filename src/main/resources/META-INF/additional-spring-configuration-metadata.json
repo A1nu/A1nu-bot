@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "bot.secret",
+      "type": "java.lang.String",
+      "description": "Description for bot.secret."
+    }
+  ] }
