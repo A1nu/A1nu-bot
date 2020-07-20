@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+<div>
+    <nav th:replace="exports :: navigation ('dashboard')"></nav>
+</div>
+<nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/home}" th:text="#{navigation.home}"></a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{navigation.dashboard}"></li>
+        </ol>
+    </nav>
+</nav>
+<p class="text-center">
+    <h2>Dashboard</h2>
+</p>
+<div class="container">
+    <div class="d-flex flex-row justify-content-center">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Server name</th>
+                    <th scope="col">Moderation level</th>
+                    <th scope="col">Bot status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="guild, index : ${administrationGuilds}">
+                    <th scope="row" th:text="${index.index + 1}"></th>
+                    <td th:text="${guild.getName()}"></td>
+                    <td th:text="${guild.isOwner() ? 'Owner' : 'Administrator'}"></td>
+                    <td>status</td>
+                    <td>button</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

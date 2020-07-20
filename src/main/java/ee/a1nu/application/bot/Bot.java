@@ -1,41 +1,45 @@
 package ee.a1nu.application.bot;
 
-import ee.a1nu.application.bot.listeners.TestListener;
-import net.dv8tion.jda.api.AccountType;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
+import discord4j.core.DiscordClientBuilder;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.lifecycle.ReadyEvent;
+import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.User;
+import discord4j.core.object.entity.channel.MessageChannel;
+import discord4j.core.object.presence.Activity;
+import discord4j.core.object.presence.Presence;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
-import javax.security.auth.login.LoginException;
+import java.util.Objects;
+
 @Service
-public class Bot implements DiscordBot {
-    private JDA jda;
-
+public class Bot {
+    GatewayDiscordClient client;
+    private static final Logger log = Loggers.getLogger(DiscordClientBuilder.class);
     public Bot(Environment env) {
-        try {
-            jda = new JDABuilder(AccountType.BOT)
-                    .setToken(env.getProperty("spring.bot.secret"))
-                    .setActivity(Activity.playing("Development"))
-                    .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                    .addEventListeners(new TestListener())
-                    .build();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
-    }
+        client = DiscordClientBuilder.create(Objects.requireNonNull(env.getProperty("spring.bot.secret")))
+                .build()
+                .gateway()
+                .setInitialStatus(ignore -> Presence.online(Activity.playing("In development")))
+                .login()
+                .block();
 
-    public void sendMessage(String guild, String channel, String message) {
-        try {
-            jda
-                    .getGuildById(guild)
-                    .getTextChannelById(channel)
-                    .sendMessage(message)
-                    .queue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        client.getEventDispatcher().on(ReadyEvent.class)
+                .subscribe(event -> {
+                    User self = event.getSelf();
+                    log.info(String.format("Logged in as %s#%s", self.getUsername(), self.getDiscriminator()));
+                });
+
+        client.on(MessageCreateEvent.class).subscribe(event -> {
+            final Message message = event.getMessage();
+            if ("!ping".equals(message.getContent())) {
+                final MessageChannel channel = message.getChannel().block();
+                channel.createMessage("Pong!").block();
+            }
+        });
     }
 }
