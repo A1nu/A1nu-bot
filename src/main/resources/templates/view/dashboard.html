@@ -13,29 +13,48 @@
         </ol>
     </nav>
 </nav>
-<p class="text-center">
-    <h2>Dashboard</h2>
-</p>
 <div class="container">
+    <p class="text-center">
+    <h2>Dashboard</h2>
+    </p>
     <div class="d-flex flex-row justify-content-center">
         <div class="col-12">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Server name</th>
-                    <th scope="col">Moderation level</th>
-                    <th scope="col">Bot status</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" th:text="#{dashboard.count}"></th>
+                    <th scope="col" th:text="#{dashboard.serverName}"></th>
+                    <th scope="col" th:text="#{dashboard.moderationLevel}"></th>
+                    <th scope="col" th:text="#{dashboard.information}"></th>
+                    <th scope="col" th:text="#{dashboard.actionsCol}"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="guild, index : ${administrationGuilds}">
                     <th scope="row" th:text="${index.index + 1}"></th>
                     <td th:text="${guild.getName()}"></td>
-                    <td th:text="${guild.isOwner() ? 'Owner' : 'Administrator'}"></td>
-                    <td>status</td>
-                    <td>button</td>
+                    <td th:if="${guild.getPermissions() == 2147483647}" th:text="#{permissions.administratorRole}"></td>
+                    <td th:if="${guild.getPermissions() != 2147483647}" th:text="#{permissions.userRole}"></td>
+                    <td th:if="${guild.getBotExists()}">
+                        <form method="get" th:action="@{/user-info(id=${guild.getId()})}">
+                            <button type="submit" class="btn btn-primary" th:text="#{dashboard.infoButtonText}"></button>
+                        </form>
+                    </td>
+                    <td th:if="${!guild.getBotExists()}" th:text="#{dashboard.placeholder}"></td>
+                    <td th:if="${guild.getPermissions() == 2147483647 && !guild.getBotExists()}">
+                        <form method="get" action="https://discord.com/oauth2/authorize">
+                            <input type="hidden" name="client_id" th:value="${client_id}" />
+                            <input type="hidden" name="scope" value="bot" />
+                            <button type="submit" class="btn btn-primary" th:text="#{dashboard.addBotButton}"></button>
+                        </form>
+                    </td>
+                    <td th:if="${guild.getPermissions() == 2147483647 && guild.getBotExists()}">
+                        <form method="get" th:action="@{/configuration}">
+                            <input type="hidden" name="guildId" th:value="${guild.getId()}">
+                            <button type="submit" class="btn btn-primary" th:text="#{dashboard.manageBotButton}"></button>
+                        </form>
+                    </td>
+                    <td th:if="${guild.getPermissions() != 2147483647}">-</td>
                 </tr>
                 </tbody>
             </table>

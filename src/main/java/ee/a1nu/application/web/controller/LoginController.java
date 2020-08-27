@@ -5,15 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
-
 @Controller
 public class LoginController {
     @GetMapping(value={"/home", "/"})
     public ModelAndView home(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("view/home");
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return modelAndView;
     }
 

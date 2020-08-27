@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+<div>
+    <nav th:replace="exports :: navigation ('dashboard')"></nav>
+</div>
+<nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/home}" th:text="#{navigation.home}"></a></li>
+            <li class="breadcrumb-item"><a th:href="@{/dashboard}" th:text="#{navigation.dashboard}"></a></li>
+            <li class="breadcrumb-item"><a th:href="@{/configuration(guildId=${guildId})}" th:text="${guildName}"></a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${currentConfiguration}"></li>
+        </ol>
+    </nav>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form th:object="${currencyCommand}" method="post" th:action="@{/configuration/currency}">
+                <div class="form-group">
+                    <input type="hidden" name="guildId" th:value="${guildId}">
+                    <input type="hidden" name="type" th:value="${commandCategory}">
+                    <input type="hidden" name="id" th:value="${currencyCommand.getId()}">
+                    <div class="custom-control custom-switch mb-2">
+                        <input class="custom-control-input" type="checkbox" id="isCommandEnabled" th:field="*{enabled}">
+                        <label class="custom-control-label" for="isCommandEnabled" th:text="#{form.commandEnabled}"></label>
+                    </div>
+                    <div class="custom-control custom-switch mb-2">
+                        <input class="custom-control-input" type="checkbox" id="isTransactionEnabled" th:field="*{transactionEnabled}">
+                        <label class="custom-control-label" for="isTransactionEnabled" th:text="#{form.currency.isTransactionsEnabled}"></label>
+                    </div>
+                    <div class="alert alert-danger" role="alert" th:if="${errorMessage}" th:text="#{form.error}"></div>
+                    <div class="alert alert-success mb-2" role="alert" th:if="${successMessage}" th:text="#{form.successUpdate}"></div>
+                    <button type="submit" class="btn btn-primary mb-2" th:text="#{form.saveButton}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

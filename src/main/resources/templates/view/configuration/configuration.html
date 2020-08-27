@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+<div>
+    <nav th:replace="exports :: navigation ('dashboard')"></nav>
+</div>
+<nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/home}" th:text="#{navigation.home}"></a></li>
+            <li class="breadcrumb-item"><a th:href="@{/dashboard}" th:text="#{navigation.dashboard}"></a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${guildName}"></li>
+        </ol>
+    </nav>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-4 mb-2" th:each="command, index : ${commands}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${command.getKey()}"></h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a th:href="@{/configuration/edit(type=${command.getValue()}, guildId=${guildId})}" class="btn btn-primary" th:text="#{configuration.editButton}"></a>
+<!--                    <a th:target="_blank" th:if="${command.getValue().toString() == 'CURRENCY'}" th:href="@{/configuration/managePockets(guildId=${guildId})}" class="btn btn-primary" th:text="#{configuration.currency.managePocketButton}"></a>-->
+                    <button th:if="${command.getValue().toString() == 'CURRENCY'}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#pocketModal" th:text="#{configuration.currency.managePocketButton}"></button>
+                    <div th:if="${command.getValue().toString() == 'CURRENCY'}" th:replace="view/configuration/user-pocket :: pocketModal (${guildId}, ${csrf})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

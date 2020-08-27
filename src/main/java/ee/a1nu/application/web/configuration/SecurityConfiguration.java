@@ -1,7 +1,7 @@
 package ee.a1nu.application.web.configuration;
 
 import ee.a1nu.application.web.rest.RestOAuth2AccessTokenResponseClient;
-import ee.a1nu.application.web.service.RestOAuth2UserService;
+import ee.a1nu.application.database.service.RestOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
