@@ -1,7 +1,7 @@
 package ee.a1nu.application.commandConstants;
 
 public enum CommandAlias {
-    CURRENCY("currency");
+    CURRENCY("cur");
 
     private final String name;
 

@@ -36,7 +36,8 @@
                     <td th:if="${guild.getPermissions() == 2147483647}" th:text="#{permissions.administratorRole}"></td>
                     <td th:if="${guild.getPermissions() != 2147483647}" th:text="#{permissions.userRole}"></td>
                     <td th:if="${guild.getBotExists()}">
-                        <form method="get" th:action="@{/user-info(id=${guild.getId()})}">
+                        <form method="get" th:action="@{/dashboard/user-info}">
+                            <input type="hidden" name="guildId" th:value="${guild.getId()}">
                             <button type="submit" class="btn btn-primary" th:text="#{dashboard.infoButtonText}"></button>
                         </form>
                     </td>
@@ -44,6 +45,7 @@
                     <td th:if="${guild.getPermissions() == 2147483647 && !guild.getBotExists()}">
                         <form method="get" action="https://discord.com/oauth2/authorize">
                             <input type="hidden" name="client_id" th:value="${client_id}" />
+                            <input type="hidden" name="guild_id" th:value="${guild.getId()}" />
                             <input type="hidden" name="scope" value="bot" />
                             <button type="submit" class="btn btn-primary" th:text="#{dashboard.addBotButton}"></button>
                         </form>

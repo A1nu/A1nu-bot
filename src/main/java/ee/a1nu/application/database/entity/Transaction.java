@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import ee.a1nu.application.database.constants.TransactionType;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,10 @@ public class Transaction extends BaseEntity {
     @NonNull
     @JsonIgnore
     Pocket pocket;
+
+    @ManyToOne
+    @JsonIgnore
+    Pocket secondaryPocket;
 
     @Column(name = "type")
     @NonNull

@@ -3,6 +3,7 @@ package ee.a1nu.application.database.entity;
 import discord4j.common.util.Snowflake;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.List;
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "member")
 public class Member {
     @Id

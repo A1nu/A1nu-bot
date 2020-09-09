@@ -17,9 +17,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/login", "/error").permitAll()
+                .antMatchers("/login", "/error", "/", "/documentation").permitAll()
                 .antMatchers("/home").authenticated()
-                .antMatchers("/").authenticated()
                 .anyRequest()
                 .authenticated()
                 .and().logout()
@@ -38,8 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+            .ignoring()
+            .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
 
     @Bean

@@ -4,17 +4,16 @@ import discord4j.common.util.Snowflake;
 import ee.a1nu.application.database.constants.TransactionType;
 import ee.a1nu.application.database.entity.Pocket;
 import ee.a1nu.application.database.repository.GuildEntityRepository;
-import ee.a1nu.application.database.repository.MemberRepository;
 import ee.a1nu.application.database.repository.PocketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PocketService {
-    private PocketRepository pocketRepository;
-    private MemberService memberService;
-    private GuildEntityRepository guildEntityRepository;
-    private TransactionService transactionService;
+    private final PocketRepository pocketRepository;
+    private final MemberService memberService;
+    private final GuildEntityRepository guildEntityRepository;
+    private final TransactionService transactionService;
 
     @Autowired
     public PocketService(

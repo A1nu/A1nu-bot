@@ -10,34 +10,22 @@ import reactor.util.Loggers;
 @Service("guildEntityService")
 public class GuildEntityService {
     private static final reactor.util.Logger log = Loggers.getLogger(GuildEntityService.class);
-    private GuildEntityRepository guildEntityRepository;
+    private final GuildEntityRepository guildEntityRepository;
 
     @Autowired
     public GuildEntityService(GuildEntityRepository guildEntityRepository) {
         this.guildEntityRepository = guildEntityRepository;
     }
 
-    public Guild getOrCreateGuild(Snowflake snowflake) {
-        if (isGuildExists(snowflake)) {
-            return getGuild(snowflake);
-        } else {
-            log.info(String.format("Creating new guild with id: %s", snowflake.asString()));
-            return createGuild(snowflake);
-        }
-    }
-
     public void createIfNotExists(Snowflake guildSnowflake) {
         if (!isGuildExists(guildSnowflake)) {
+            log.info(String.format("Creating new guild with id: %s", guildSnowflake.asString()));
             createGuild(guildSnowflake);
         }
     }
 
     public Boolean isGuildExists(Snowflake snowflake) {
         return guildEntityRepository.existsGuildById(snowflake.asLong());
-    }
-
-    public Guild getGuild(Snowflake snowflake) {
-        return guildEntityRepository.getOne(snowflake.asLong());
     }
 
     public Guild createGuild(Snowflake snowflake) {

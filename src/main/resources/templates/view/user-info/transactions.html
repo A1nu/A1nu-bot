@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table">
+                <thead class="position-sticky">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Transaction type</th>
+                        <th scope="col">Diff</th>
+                        <th scope="col">Balance after</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="transaction, index : ${transactions}" th:class='${transaction.getDiff() > 0 ? "table-success" : "table-danger"}'>
+                        <th scope="row" th:text="${index.index + 1}"></th>
+                        <td th:text='${transaction.getDate().format(formatter)}'></td>
+                        <td th:text="${transaction.getTransactionType().name()}"></td>
+                        <td th:text="${transaction.getDiff()}"></td>
+                        <td th:text="${transaction.getBalanceAfter()}"></td>
+                        <td th:text="${transaction.getDescription()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

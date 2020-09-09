@@ -34,4 +34,6 @@ out/
 .vscode/
 /src/main/resources/application-dev.properties
 /docker/db/.env
-/docker/app/.env
+/.env
+/src/main/resources/application-prod.properties
+/src/main/resources/keystore/pkcs.p12

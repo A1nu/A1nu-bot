@@ -4,6 +4,7 @@
 
 <div class="modal fade" id="pocketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" th:fragment="pocketModal (guildId, csrf)">
     <script th:src="@{/js/angularjs-1.8.0.js}"></script>
+    <script th:src="@{/js/moment.min.js}"></script>
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content" ng-app="pocketModal">
             <div class="modal-header">
@@ -54,7 +55,12 @@
                                     </div>
                                 </td>
                                 <td>{{pocket.currencyAmount}}</td>
-                                <td>{{pocket.lastTransaction.diff}}</td>
+                                <td>
+                                    <div class="row" ng-click="openTransactionsModal(pocket.userId)">
+                                        <div class="col-12" ng-style="pocket.lastTransaction.diff > 0 && {color: 'green'} || {color: 'red'}">{{formatDiff(pocket.lastTransaction.diff)}}</div>
+                                        <div class="col-12">{{formatDate(pocket.lastTransaction.date)}}</div>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">

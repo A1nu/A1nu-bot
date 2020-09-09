@@ -3,7 +3,9 @@ const errorMessages = {
     configDisabled: window.modalDataErrorText.disabled
 }
 
+
 angular.module('pocketModal', [])
+    .constant("moment", moment)
     .service('PocketService', ['$http', function ($http) {
         this.getPockets = () => {
             return $http({
@@ -34,48 +36,68 @@ angular.module('pocketModal', [])
             })
         }
     }])
-    .controller('PocketController', ['$scope', 'PocketService', function ($scope, PocketService) {
-        $scope.showError = false
-        $scope.showLoading = false
-        $scope.errorMessage = errorMessages.configDisabled
-        $scope.pocketsData = []
+    .controller('PocketController', ['$scope', 'PocketService', 'moment', function ($scope, PocketService, moment) {
 
-        $('#pocketModal')
-            .on('shown.bs.modal', function () {
-                $scope.getPockets()
-            })
-            .on('hidden.bs.modal', function () {
-                $scope.showError = false
-                $scope.showLoading = false
-                $scope.errorMessage = ''
-                $scope.pocketsData = []
-            })
-        $scope.sendUpdate = (pocket, index) => {
-            $scope.showLoading = true;
-            $scope.showError = false;
-            PocketService.sendTransaction(window.guildId, pocket.userId, pocket.description, pocket.diff, pocket.frozen, pocket.pocketId)
-                .then((suc) => {
-                    $scope.showLoading = false;
-                    $scope.pocketsData[index] = suc.data
-                    console.log(suc.data)
-                }).catch((e) => {
-                $scope.showLoading = false
-                $scope.showError = true
-                $scope.errorMessage = `${e.data.errorMessage}. Error code: ${e.data.errorCode}`
-            })
-        }
+        angular.extend($scope, {
+            showError: false,
+            showLoading: false,
+            errorMessage: errorMessages.configDisabled,
+            pocketsData: [],
 
-        $scope.getPockets = () => {
-            $scope.showLoading = true
-            PocketService.getPockets()
-                .then((data) => {
-                    $scope.showError = false
+            sendUpdate: (pocket, index) => {
+                $scope.showLoading = true;
+                $scope.showError = false;
+                PocketService.sendTransaction(window.guildId, pocket.userId, pocket.description, pocket.diff, pocket.frozen, pocket.pocketId)
+                    .then((suc) => {
+                        $scope.showLoading = false;
+                        $scope.pocketsData[index] = suc.data
+                        console.log(suc.data)
+                    }).catch((e) => {
                     $scope.showLoading = false
-                    $scope.pocketsData = data
-                }).catch(err => {
+                    $scope.showError = true
+                    $scope.errorMessage = `${e.data.errorMessage}. Error code: ${e.data.errorCode}`
+                })
+            },
+            getPockets: () => {
+                $scope.showLoading = true
+                PocketService.getPockets()
+                    .then((data) => {
+                        $scope.showError = false
+                        $scope.showLoading = false
+                        $scope.pocketsData = data
+                    }).catch(err => {
                     $scope.showLoading = false
                     $scope.showError = true
                     $scope.errorMessage = errorMessages[err.data.errorMessage]
+                })
+            },
+            formatDiff: (diff) => {
+                return diff > 0 ? '+' + diff.toString() : diff
+            },
+            formatDate: (date) => {
+                if (!date) {
+                    return ''
+                }
+                return moment(new Date(date)).format('MMM Do, hh:mm').toString()
+            },
+            openTransactionsModal: (userId) => {
+                window.open(`/user-transactions?userId=${userId}&guildId=${window.guildId}`, '_blank', 'height=800,width=800,top=100,left=600')
+            }
+        })
+
+        $('#pocketModal')
+            .on('shown.bs.modal', function (event) {
+                if (event.target.id === 'pocketModal') {
+                    $scope.getPockets()
+                }
             })
-        }
+        $('#pocketModal')
+            .on('hidden.bs.modal', function (event) {
+                if (event.target.id === 'pocketModal') {
+                    $scope.showError = false
+                    $scope.showLoading = false
+                    $scope.errorMessage = ''
+                    $scope.pocketsData = []
+                }
+            })
 }])

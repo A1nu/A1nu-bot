@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static ee.a1nu.application.web.configuration.SecurityConfiguration.DISCORD_BOT_USER_AGENT;
 
@@ -27,11 +28,11 @@ public class DiscordRestService {
 
         HttpEntity<String> entity = new HttpEntity<>("body", buildHeaders(oAuth2AuthorizedClient));
 
-        return Arrays.asList(restTemplate.exchange(
-                guildsUrl,
-                HttpMethod.GET,
-                entity,
-                GuildPOJO[].class).getBody());
+        return Arrays.asList(Objects.requireNonNull(restTemplate.exchange(
+            guildsUrl,
+            HttpMethod.GET,
+            entity,
+            GuildPOJO[].class).getBody()));
     }
 
     private HttpHeaders buildHeaders(OAuth2AuthorizedClient oAuth2AuthorizedClient) {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+    <div>
+        <nav th:replace="exports :: navigation ('dashboard')"></nav>
+    </div>
+    <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/home}" th:text="#{navigation.home}"></a></li>
+                <li class="breadcrumb-item"><a th:href="@{/dashboard}" th:text="#{navigation.dashboard}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${guildName}"></li>
+            </ol>
+        </nav>
+    </nav>
+    <script th:inline="javascript">
+        function showTransactions() {
+            window.open(`/user-transactions?&guildId=[[${guildId}]]`, '_blank', 'height=800,width=800,top=100,left=600')
+        }
+    </script>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pocket</h5>
+                        <p class="card-text">Your pocket information:</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li onclick="showTransactions()" class="list-group-item" th:text='${T(java.lang.String).format("Pocket balance: %d", balance)}'></li>
+                    </ul>
+                    <div class="card-body">
+                        <a th:href="@{/shop}" class="btn btn-primary disabled" th:text="#{userInfo.shopButton}"></a>
+                        <a th:href="@{/transfer}" class="btn btn-primary disabled" th:text="#{userInfo.transferButton}"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

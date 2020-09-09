@@ -1,0 +1,15 @@
+# The format used for the keystore. It could be set to JKS in case it is a JKS file
+server.ssl.key-store-type=PKCS12
+# The path to the keystore containing the certificate
+server.ssl.key-store=classpath:keystore/pkcs.p12
+# The password used to generate the certificate
+server.ssl.key-store-password=
+# The alias mapped to the certificate
+server.ssl.key-alias=
+server.port=443
+server.ssl.enabled=true
+
+spring.bot.secret=
+spring.security.oauth2.client.registration.discord.client-id=
+spring.security.oauth2.client.registration.discord.client-secret=
+spring.security.oauth2.client.registration.discord.clientName=

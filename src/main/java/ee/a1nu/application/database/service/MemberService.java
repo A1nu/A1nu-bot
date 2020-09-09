@@ -11,7 +11,7 @@ import reactor.util.Loggers;
 public class MemberService {
     private static final reactor.util.Logger log = Loggers.getLogger(MemberService.class);
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {

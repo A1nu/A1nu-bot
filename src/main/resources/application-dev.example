@@ -1,0 +1,9 @@
+DB_ADDRESS=
+DB_USERNAME=
+DB_PASSWORD=
+server.port=8080
+
+spring.bot.secret=
+spring.security.oauth2.client.registration.discord.client-id=
+spring.security.oauth2.client.registration.discord.client-secret=
+spring.security.oauth2.client.registration.discord.clientName=

@@ -7,9 +7,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "443:443"
     env_file:
-      - docker/app/.env
+      - .env
+    environment:
+      - PROFILE=prod
     depends_on:
       - db
     links:
@@ -20,7 +22,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - docker/db/.env
+      - .env
     volumes:
       - my_dbdata:/var/lib/postgresql/data
 volumes:

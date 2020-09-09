@@ -20,9 +20,8 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${command.getKey()}"></h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p class="card-text">Currency commands configuration.</p>
                     <a th:href="@{/configuration/edit(type=${command.getValue()}, guildId=${guildId})}" class="btn btn-primary" th:text="#{configuration.editButton}"></a>
-<!--                    <a th:target="_blank" th:if="${command.getValue().toString() == 'CURRENCY'}" th:href="@{/configuration/managePockets(guildId=${guildId})}" class="btn btn-primary" th:text="#{configuration.currency.managePocketButton}"></a>-->
                     <button th:if="${command.getValue().toString() == 'CURRENCY'}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#pocketModal" th:text="#{configuration.currency.managePocketButton}"></button>
                     <div th:if="${command.getValue().toString() == 'CURRENCY'}" th:replace="view/configuration/user-pocket :: pocketModal (${guildId}, ${csrf})"></div>
                 </div>

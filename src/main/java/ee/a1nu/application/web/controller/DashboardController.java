@@ -1,7 +1,6 @@
 package ee.a1nu.application.web.controller;
 
 import discord4j.common.util.Snowflake;
-import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Guild;
 import ee.a1nu.application.bot.Bot;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import reactor.util.Loggers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,27 +22,22 @@ import java.util.stream.Collectors;
 
 @Controller
 public class DashboardController {
-    private Environment env;
-    private static final reactor.util.Logger log = Loggers.getLogger(DiscordClientBuilder.class);
-
-
-    @Autowired
-    private DiscordRestService discordRestService;
+    private final Environment env;
+    private final DiscordRestService discordRestService;
+    private final Bot bot;
 
     @Autowired
-    private Bot bot;
-
-    public DashboardController(Environment env) {
+    public DashboardController(Environment env, Bot bot, DiscordRestService discordRestService) {
         this.env = env;
+        this.bot = bot;
+        this.discordRestService = discordRestService;
     }
 
     @GetMapping(value="/dashboard")
     public ModelAndView dashboard(@RegisteredOAuth2AuthorizedClient("discord") OAuth2AuthorizedClient authorizedClient) {
         ModelAndView modelAndView = new ModelAndView();
         List<GuildPOJO> guildList = discordRestService.getUserGuilds(authorizedClient);
-        GatewayDiscordClient discordClient = bot.getClient();
-        List<Guild> botGuilds = new ArrayList<>();
-        discordClient.getGuilds().subscribe(botGuilds::add);
+        List<Guild> botGuilds = bot.getBotGuilds();
         List<GuildPOJO> guildsWhereUserHasAdminAuthority =
                 guildList
                         .stream()

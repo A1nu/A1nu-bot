@@ -13,8 +13,8 @@ import reactor.util.Loggers;
 @Service
 public class CurrencyCommandService {
     private static final reactor.util.Logger log = Loggers.getLogger(CurrencyCommandService.class);
-    private CurrencyCommandRepository currencyCommandRepository;
-    private GuildEntityRepository guildEntityRepository;
+    private final CurrencyCommandRepository currencyCommandRepository;
+    private final GuildEntityRepository guildEntityRepository;
 
     @Autowired
     public CurrencyCommandService(CurrencyCommandRepository currencyCommandRepository, GuildEntityRepository guildEntityRepository) {
