@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="exports :: head (#{home.title})"></head>
+<body>
+    <div>
+        <nav th:replace="exports :: navigation ('documentation')"></nav>
+    </div>
+    <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/home}" th:text="#{navigation.home}"></a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{navigation.documentation}"></li>
+            </ol>
+        </nav>
+    </nav>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Command name</th>
+                <th scope="col">Command name permission</th>
+                <th scope="col">Arguments</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr scope="row" th:each="CommandName : ${CommandNames}">
+                <th th:text="${CommandName.getCommandName()}"></th>
+                <td th:text="${CommandName.getCommandNamePermission()}"></td>
+                <td>
+                    <ul>
+                        <li  th:each="Argument : ${CommandName.getArguments()}">
+                            [[${Argument.name}]]
+                            <ul>
+                                <li th:text="${Argument.required?'Required':'Not required'}"></li>
+                                <li th:text="${Argument.description}"></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </td>
+                <td th:text="${CommandName.getDescription()}"></td>
+
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
