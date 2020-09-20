@@ -13,34 +13,31 @@
             </ol>
         </nav>
     </nav>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Command name</th>
-                <th scope="col">Command name permission</th>
-                <th scope="col">Arguments</th>
-                <th scope="col">Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr scope="row" th:each="CommandName : ${CommandNames}">
-                <th th:text="${CommandName.getCommandName()}"></th>
-                <td th:text="${CommandName.getCommandNamePermission()}"></td>
-                <td>
-                    <ul>
-                        <li  th:each="Argument : ${CommandName.getArguments()}">
-                            [[${Argument.name}]]
-                            <ul>
-                                <li th:text="${Argument.required?'Required':'Not required'}"></li>
-                                <li th:text="${Argument.description}"></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </td>
-                <td th:text="${CommandName.getDescription()}"></td>
+    <div class="container h-100 d-flex flex-column">
+        <div class="text-center flex-grow-0">
+            <h2>Documentation</h2>
+        </div>
+        <div class="row flex-grow-1">
+            <div class="col-3 position-relative">
+                <nav class="navbar navbar-dark bg-primary flex-column overflow-auto">
+                    <nav class="nav nav-pills flex-column">
+                        <th:block th:each="CommandName : ${CommandNames}">
+                            <a href="" class="nav-link" th:text="${CommandName.getCommandName()}"></a>
+                            <nav class="nav nav-pills flex-column ml-3">
+                                <a href="" class="nav-link">Description</a>
+                                <a href="" class="nav-link">Arguments</a>
+                                <nav class="nav nav-pills flex-column ml-3"  th:with="Arguments=${CommandName.getArguments()}">
+                                    <a href="" class="nav-link" th:each="Argument : ${Arguments}"  th:text="${Argument.getName()}"></a>
+                                </nav>
+                            </nav>
+                        </th:block>
+                    </nav>
+                </nav>
+            </div>
+            <div class="col-9">
 
-            </tr>
-        </tbody>
-    </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
