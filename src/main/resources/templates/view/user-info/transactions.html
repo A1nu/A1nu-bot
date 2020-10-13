@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <table class="table">
+            <table class="table table-bordered">
                 <thead class="position-sticky">
                     <tr>
                         <th scope="col">#</th>
@@ -21,7 +21,7 @@
                         <th scope="row" th:text="${index.index + 1}"></th>
                         <td th:text='${transaction.getDate().format(formatter)}'></td>
                         <td th:text="${transaction.getTransactionType().name()}"></td>
-                        <td th:text="${transaction.getDiff()}"></td>
+                        <td th:text='${transaction.getDiff() > 0 ? "+" + transaction.getDiff() : transaction.getDiff()}'></td>
                         <td th:text="${transaction.getBalanceAfter()}"></td>
                         <td th:text="${transaction.getDescription()}"></td>
                     </tr>
