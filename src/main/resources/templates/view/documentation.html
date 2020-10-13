@@ -13,29 +13,42 @@
             </ol>
         </nav>
     </nav>
-    <div class="container h-100 d-flex flex-column">
-        <div class="text-center flex-grow-0">
+    <div class="container d-flex flex-column">
+        <div class="text-center">
             <h2>Documentation</h2>
         </div>
-        <div class="row flex-grow-1">
+        <div class="row">
             <div class="col-3 position-relative">
-                <nav class="navbar navbar-dark bg-primary flex-column overflow-auto">
+                <nav id="navbar" class="navbar navbar-dark bg-primary flex-column overflow-auto vh-100 position-sticky sticky-top">
                     <nav class="nav nav-pills flex-column">
                         <th:block th:each="CommandName : ${CommandNames}">
-                            <a href="" class="nav-link" th:text="${CommandName.getCommandName()}"></a>
-                            <nav class="nav nav-pills flex-column ml-3">
-                                <a href="" class="nav-link">Description</a>
-                                <a href="" class="nav-link">Arguments</a>
-                                <nav class="nav nav-pills flex-column ml-3"  th:with="Arguments=${CommandName.getArguments()}">
-                                    <a href="" class="nav-link" th:each="Argument : ${Arguments}"  th:text="${Argument.getName()}"></a>
-                                </nav>
+                            <a th:href="${'#' + CommandName.getCommandName()}" class="nav-link" th:text="${CommandName.getCommandName()}"></a>
+                            <nav class="nav nav-pills flex-column ml-3" th:with="Arguments=${CommandName.getArguments()}">
+                                <a th:href="${'#' + CommandName.getCommandName() + '_' + Argument.getName()}" class="nav-link" th:each="Argument : ${Arguments}"  th:text="${Argument.getName()}"></a>
                             </nav>
                         </th:block>
                     </nav>
                 </nav>
             </div>
             <div class="col-9">
-
+                <div data-spy="scroll" data-target="#navbar" data-offset="30">
+                    <div class="my-5" th:each="CommandName : ${CommandNames}">
+                        <h3 th:id="${CommandName.getCommandName()}" th:switch="${CommandName.getCommandNamePermission().name()}">
+                            <span th:text="${CommandName.getCommandName()}"></span>
+                            <span class="badge badge-danger" th:case="'ADMIN'" th:text="${CommandName.getCommandNamePermission()}"></span>
+                            <span class="badge badge-light" th:case="'USER'" th:text="${CommandName.getCommandNamePermission()}"></span>
+                            <span class="badge badge-warning" th:case="'OWNER'" th:text="${CommandName.getCommandNamePermission()}"></span>
+                        </h3>
+                        <p th:text="${CommandName.getDescription()}" >
+                            <div class="ml-5 my-3" th:with="Arguments=${CommandName.getArguments()}">
+                                <th:block th:each="Argument : ${Arguments}">
+                                    <h5 th:id="${CommandName.getCommandName() + '_' + Argument.getName()}">
+                                        <span th:text="${Argument.getName()}"></span>
+                                        <span class="badge badge-light" th:if="${Argument.getRequired()}">*</span>
+                                    </h5>
+                        <p th:text="${Argument.getDescription()}"></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
