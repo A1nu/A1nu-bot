@@ -17,4 +17,8 @@ public class CommandNamesService {
     public List<CommandName> getCommandNamesByCommandCategory(CommandCategory commandCategory) {
         return commandCategoryListMap.get(commandCategory);
     }
+
+    public Map<CommandCategory, List<CommandName>> getAllCategoriesWithCommand() {
+        return commandCategoryListMap;
+    }
 }
